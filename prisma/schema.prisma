@@ -75,3 +75,28 @@ model Verification {
   @@index([identifier])
   @@map("verification")
 }
+
+model Aluno {
+  id           String         @id @default(uuid())
+  nome         String
+  telefone     String
+  cpf          String         @unique
+  presencas    Presenca[]
+  createdAt    DateTime       @default(now())
+  updatedAt    DateTime       @updatedAt
+
+  @@map("aluno")
+}
+
+model Presenca {
+  id        String    @id @default(uuid())
+  data      DateTime
+  presente  Boolean
+  alunoId   String
+  aluno     Aluno     @relation(fields: [alunoId], references: [id], onDelete: Cascade)
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+
+  @@index([alunoId])
+  @@map("presenca")
+}
